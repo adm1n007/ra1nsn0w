@@ -20,7 +20,7 @@ using namespace tihmstar;
 using namespace tihmstar::ra1nsn0w;
 
 #ifndef HAVE_MEMMEM
-void *memmem(const void *haystack_start, size_t haystack_len, const void *needle_start, size_t needle_len){
+static void *memmem(const void *haystack_start, size_t haystack_len, const void *needle_start, size_t needle_len){
     const unsigned char *haystack = (const unsigned char *)haystack_start;
     const unsigned char *needle = (const unsigned char *)needle_start;
     const unsigned char *h = NULL;
@@ -39,7 +39,7 @@ void *memmem(const void *haystack_start, size_t haystack_len, const void *needle
         return NULL;
     }
 
-    for (; *haystack && haystack_len--; haystack++) {
+    for (; haystack_len--; haystack++) {
         x = needle_len;
         n = needle;
         h = haystack;
@@ -47,17 +47,12 @@ void *memmem(const void *haystack_start, size_t haystack_len, const void *needle
         if (haystack_len < needle_len)
             break;
 
-        if ((*haystack != *needle) || (*haystack + needle_len != *needle + needle_len))
+        if ((haystack[0] != needle[0]) || (haystack[needle_len-1] != needle[needle_len-1]))
             continue;
 
-        for (; x; h++, n++) {
-            x--;
-
-            if (*h != *n)
-                break;
-
-            if (x == 0)
-                return (void *)haystack;
+        for (; x--; h++, n++) {
+            if (*h != *n) break;
+            if (x == 0) return (void *)haystack;
         }
     }
     return NULL;
