@@ -430,9 +430,9 @@ std::map<uint32_t,std::vector<patchfinder::patch>> ra1nsn0w::launchDevice(iOSDev
                 info("Patching kernel...\n");
                 bootcfg.curPatchComponent = 'nrkr'; //rkrn (restore kernel)
                 if (isIMG4) {
-                    pkernel = patchIMG4(kernelData.data(), kernelData.size(), kernelKeys.iv, kernelKeys.key, "Darwin", (int(*)(void*,size_t,void*))patchFunciBoot, (void*)&bootcfg);
+                    pkernel = patchIMG4(kernelData.data(), kernelData.size(), kernelKeys.iv, kernelKeys.key, "Darwin", (int(*)(void*,size_t,void*))patchFuncKernel, (void*)&bootcfg);
                 }else{
-                    kernelData = patchIMG3(kernelData.data(), kernelData.size(), kernelKeys.iv, kernelKeys.key, "Darwin", (int(*)(void*,size_t,void*))patchFunciBoot, (void*)&bootcfg);
+                    kernelData = patchIMG3(kernelData.data(), kernelData.size(), kernelKeys.iv, kernelKeys.key, "Darwin", (int(*)(void*,size_t,void*))patchFuncKernel, (void*)&bootcfg);
                 }
             }
             if (isIMG4) {
